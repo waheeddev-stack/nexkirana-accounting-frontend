@@ -603,3 +603,114 @@ textarea.form-control {
     font-size: 0.875rem;
   }
 }
+/* Admin Controls */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #b91c1c;
+}
+
+.btn-success {
+  background-color: #16a34a;
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: #15803d;
+}
+
+.btn-icon {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon:hover {
+  background-color: #e5e7eb;
+}
+
+.btn-icon.btn-danger {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.btn-icon.btn-danger:hover {
+  background-color: #fee2e2;
+}
+
+.btn-icon.btn-success {
+  background-color: #f0fdf4;
+  color: #16a34a;
+}
+
+.btn-icon.btn-success:hover {
+  background-color: #dcfce7;
+}
+
+/* Alert styles */
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.alert-error {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.alert-warning {
+  background-color: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fed7aa;
+}
+
+.alert-success {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.alert-info {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+/* Company card styles */
+.deleted-company {
+  position: relative;
+}
+
+.deleted-company::before {
+  content: 'DELETED';
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: #dc2626;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  z-index: 1;
+}
