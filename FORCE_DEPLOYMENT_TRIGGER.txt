@@ -1,0 +1,22 @@
+FORCE DEPLOYMENT - 405 ERROR FIX
+================================
+
+Timestamp: 2026-02-01T09:43:00Z
+Issue: Frontend still showing 405 errors
+Fix: Hardcoded backend URL in api.js
+Status: Ready for deployment
+
+Backend Status: ✅ WORKING (MongoDB connected)
+Frontend Status: ❌ NEEDS REDEPLOYMENT
+
+This file triggers a new deployment to ensure Vercel picks up the latest API configuration changes.
+
+API Configuration:
+- Backend URL: https://nexkirana-accounting-backend.onrender.com/api
+- Hardcoded to prevent environment variable issues
+- Should resolve 405 errors immediately after deployment
+
+Expected Result:
+- API calls will go to backend instead of frontend
+- Login functionality will work
+- 405 errors will be resolved
