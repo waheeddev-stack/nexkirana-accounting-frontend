@@ -1,42 +1,20 @@
 import axios from 'axios';
 
-// Get API base URL from environment or default to local
-const getApiBaseUrl = () => {
-  // Force production backend URL for now to fix 405 error
-  const isProduction = import.meta.env.PROD || window.location.hostname !== 'localhost';
-  
-  if (isProduction) {
-    // Always use Render.com backend in production
-    const productionApiUrl = 'https://nexkirana-accounting-backend.onrender.com/api';
-    console.log('Production mode: using', productionApiUrl);
-    return productionApiUrl;
-  }
-  
-  // Check for environment variable in development
-  if (import.meta.env.VITE_API_URL) {
-    console.log('Using VITE_API_URL:', import.meta.env.VITE_API_URL);
-    return import.meta.env.VITE_API_URL;
-  }
-  
-  // Development fallback
-  console.log('Development mode: using local API');
-  return 'http://localhost:3000/api';
-};
+// HARDCODED BACKEND URL - CANNOT FAIL
+const BACKEND_URL = 'https://nexkirana-accounting-backend.onrender.com/api';
 
-// Log the base URL for debugging
-const baseURL = getApiBaseUrl();
-console.log('🔧 API Configuration Debug:');
-console.log('- Base URL:', baseURL);
-console.log('- Environment:', import.meta.env.MODE);
-console.log('- Is Production:', import.meta.env.PROD);
-console.log('- Hostname:', window.location.hostname);
-console.log('- VITE_API_URL:', import.meta.env.VITE_API_URL || 'Not set');
+console.log('🔧 HARDCODED API Configuration:');
+console.log('- Backend URL:', BACKEND_URL);
+console.log('- This CANNOT call frontend domain');
+console.log('- Bypassing all environment variable issues');
 
-// Create axios instance with base configuration
+// Create axios instance with hardcoded backend URL
 const api = axios.create({
-  baseURL: baseURL,
-  timeout: 30000, // Increased timeout for Vercel cold starts
+  baseURL: BACKEND_URL,
+  timeout: 30000,
 });
+
+console.log('✅ API instance created with backend URL:', api.defaults.baseURL);
 
 // Request interceptor to add auth token
 api.interceptors.request.use(

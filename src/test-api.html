@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test - NexKirana</title>
+</head>
+<body>
+    <h1>API Connection Test</h1>
+    <button onclick="testAPI()">Test Backend Connection</button>
+    <div id="result"></div>
+
+    <script>
+        const BACKEND_URL = 'https://nexkirana-accounting-backend.onrender.com/api';
+        
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                // Test health endpoint
+                const response = await fetch(BACKEND_URL + '/health');
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <h3>✅ Backend Connection Successful!</h3>
+                    <p><strong>Status:</strong> ${data.status}</p>
+                    <p><strong>Service:</strong> ${data.service}</p>
+                    <p><strong>Version:</strong> ${data.version}</p>
+                    <p><strong>Backend URL:</strong> ${BACKEND_URL}</p>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h3>❌ Backend Connection Failed</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                    <p><strong>Backend URL:</strong> ${BACKEND_URL}</p>
+                `;
+            }
+        }
+        
+        // Auto-test on page load
+        window.onload = testAPI;
+    </script>
+</body>
+</html>
