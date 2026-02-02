@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Building2, BookOpen, Receipt, BarChart3, DollarSign, Shield, Users, AlertCircle } from 'lucide-react';
 import { useCompany } from '../context/CompanyContext';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import api from '../utils/api';
 
 const Dashboard = () => {
   const { selectedCompany } = useCompany();
@@ -24,8 +24,8 @@ const Dashboard = () => {
   const fetchStats = async () => {
     try {
       const [ledgersRes, vouchersRes] = await Promise.all([
-        axios.get(`/api/ledgers?companyId=${selectedCompany._id}`),
-        axios.get(`/api/vouchers?companyId=${selectedCompany._id}`)
+        api.get(`/api/ledgers?companyId=${selectedCompany._id}`),
+        api.get(`/api/vouchers?companyId=${selectedCompany._id}`)
       ]);
 
       const today = new Date().toISOString().split('T')[0];

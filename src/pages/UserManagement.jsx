@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Users, Plus, Edit, Trash2, Shield, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
-import axios from 'axios';
+import api from '../utils/api';
 
 const UserManagement = () => {
   const { user } = useAuth();
@@ -44,7 +44,7 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('/api/users');
+      const response = await api.get('/users');
       setUsers(response.data);
     } catch (error) {
       setError('Failed to fetch users');
@@ -60,10 +60,10 @@ const UserManagement = () => {
 
     try {
       if (editingUser) {
-        await axios.put(`/api/users/${editingUser._id}`, formData);
+        await api.put(`/api/users/${editingUser._id}`, formData);
         setSuccess('User updated successfully');
       } else {
-        await axios.post('/api/auth/register', formData);
+        await api.post('/auth/register', formData);
         setSuccess('User created successfully');
       }
       
@@ -97,7 +97,7 @@ const UserManagement = () => {
   const handleDeactivate = async (userId) => {
     if (window.confirm('Are you sure you want to deactivate this user?')) {
       try {
-        await axios.delete(`/api/users/${userId}`);
+        await api.delete(`/api/users/${userId}`);
         setSuccess('User deactivated successfully');
         fetchUsers();
       } catch (error) {

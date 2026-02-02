@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Building2, Edit, Trash2, RotateCcw, AlertCircle } from 'lucide-react';
 import { useCompany } from '../context/CompanyContext';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import api from '../utils/api';
 
 const Companies = () => {
   const { companies, fetchCompanies, selectedCompany, setSelectedCompany } = useCompany();
@@ -59,7 +59,7 @@ const Companies = () => {
     setError('');
     
     try {
-      const response = await axios.post('/api/companies', formData);
+      const response = await api.post('/companies', formData);
       alert(response.data.message || 'Company created successfully');
       fetchCompanies();
       setShowForm(false);
@@ -101,7 +101,7 @@ const Companies = () => {
     setError('');
     
     try {
-      const response = await axios.put(`/api/companies/${editingCompany._id}`, formData);
+      const response = await api.put(`/api/companies/${editingCompany._id}`, formData);
       alert(response.data.message || 'Company updated successfully');
       fetchCompanies();
       setShowForm(false);
@@ -126,7 +126,7 @@ const Companies = () => {
     }
 
     try {
-      const response = await axios.delete(`/api/companies/${companyId}`);
+      const response = await api.delete(`/api/companies/${companyId}`);
       alert(response.data.message || 'Company deleted successfully');
       fetchCompanies();
     } catch (error) {
@@ -140,7 +140,7 @@ const Companies = () => {
     if (!isAdmin) return;
     
     try {
-      const response = await axios.get('/api/companies/deleted/list');
+      const response = await api.get('/companies/deleted/list');
       setDeletedCompanies(response.data);
     } catch (error) {
       console.error('Error fetching deleted companies:', error);
@@ -155,7 +155,7 @@ const Companies = () => {
     }
 
     try {
-      const response = await axios.patch(`/api/companies/${companyId}/restore`);
+      const response = await api.patch(`/api/companies/${companyId}/restore`);
       alert(response.data.message || 'Company restored successfully');
       fetchCompanies();
       fetchDeletedCompanies();

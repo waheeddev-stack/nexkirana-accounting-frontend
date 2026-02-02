@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, BookOpen } from 'lucide-react';
 import { useCompany } from '../context/CompanyContext';
-import axios from 'axios';
+import api from '../utils/api';
 
 const Ledgers = () => {
   const { selectedCompany } = useCompany();
@@ -33,7 +33,7 @@ const Ledgers = () => {
   const fetchLedgers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`/api/ledgers?companyId=${selectedCompany._id}`);
+      const response = await api.get(`/api/ledgers?companyId=${selectedCompany._id}`);
       setLedgers(response.data);
     } catch (error) {
       alert('Error fetching ledgers');
@@ -54,7 +54,7 @@ const Ledgers = () => {
   const handleCreateLedger = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/ledgers', {
+      await api.post('/ledgers', {
         ...formData,
         company: selectedCompany._id
       });

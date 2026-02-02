@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Plus, Trash2 } from 'lucide-react';
-import axios from 'axios';
+import api from '../utils/api';
 import toast from 'react-hot-toast';
 
 const VoucherForm = ({ onSubmit, onCancel, companyId }) => {
@@ -40,7 +40,7 @@ const VoucherForm = ({ onSubmit, onCancel, companyId }) => {
 
   const fetchLedgers = async () => {
     try {
-      const response = await axios.get(`/api/ledgers?companyId=${companyId}`);
+      const response = await api.get(`/api/ledgers?companyId=${companyId}`);
       setLedgers(response.data);
     } catch (error) {
       toast.error('Error fetching ledgers');

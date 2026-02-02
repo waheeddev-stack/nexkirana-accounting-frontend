@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart3, FileText } from 'lucide-react';
 import { useCompany } from '../context/CompanyContext';
-import axios from 'axios';
+import api from '../utils/api';
 
 const Reports = () => {
   const { selectedCompany } = useCompany();
@@ -45,7 +45,7 @@ const Reports = () => {
           return;
       }
 
-      const response = await axios.get(endpoint);
+      const response = await api.get(endpoint);
       setReportData(response.data);
     } catch (error) {
       console.error('Error fetching report data:', error);

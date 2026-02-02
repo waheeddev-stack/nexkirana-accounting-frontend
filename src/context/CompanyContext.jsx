@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api'; // Use configured API instance
 import { useAuth } from './AuthContext';
 
 const CompanyContext = createContext();
@@ -23,7 +23,7 @@ export const CompanyProvider = ({ children }) => {
     
     try {
       setLoading(true);
-      const response = await axios.get('/api/companies');
+      const response = await api.get('/companies');
       setCompanies(response.data);
       if (response.data.length > 0 && !selectedCompany) {
         setSelectedCompany(response.data[0]);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Receipt } from 'lucide-react';
 import { useCompany } from '../context/CompanyContext';
-import axios from 'axios';
+import api from '../utils/api';
 
 const Vouchers = () => {
   const { selectedCompany } = useCompany();
@@ -36,7 +36,7 @@ const Vouchers = () => {
   const fetchVouchers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`/api/vouchers?companyId=${selectedCompany._id}`);
+      const response = await api.get(`/api/vouchers?companyId=${selectedCompany._id}`);
       setVouchers(response.data);
     } catch (error) {
       alert('Error fetching vouchers');
@@ -48,7 +48,7 @@ const Vouchers = () => {
 
   const fetchLedgers = async () => {
     try {
-      const response = await axios.get(`/api/ledgers?companyId=${selectedCompany._id}`);
+      const response = await api.get(`/api/ledgers?companyId=${selectedCompany._id}`);
       setLedgers(response.data);
     } catch (error) {
       console.error('Error fetching ledgers:', error);
@@ -117,7 +117,7 @@ const Vouchers = () => {
     }
 
     try {
-      await axios.post('/api/vouchers', {
+      await api.post('/vouchers', {
         ...formData,
         company: selectedCompany._id,
         totalAmount: debitTotal

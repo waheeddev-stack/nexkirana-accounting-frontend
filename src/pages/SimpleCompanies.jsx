@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Building2 } from 'lucide-react';
 import { useCompany } from '../context/CompanyContext';
-import axios from 'axios';
+import api from '../utils/api';
 
 const Companies = () => {
   const { companies, fetchCompanies, selectedCompany, setSelectedCompany } = useCompany();
@@ -24,7 +24,7 @@ const Companies = () => {
   const handleCreateCompany = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/companies', formData);
+      await api.post('/companies', formData);
       alert('Company created successfully');
       fetchCompanies();
       setShowForm(false);

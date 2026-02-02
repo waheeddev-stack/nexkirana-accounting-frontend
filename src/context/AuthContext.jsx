@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api'; // Use the configured API instance
 
 const AuthContext = createContext();
 
@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       fetchUser();
       
       // Set up session timeout warning
@@ -56,9 +56,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Add axios interceptor to handle 401 responses
+  // Add api interceptor to handle 401 responses
   useEffect(() => {
-    const interceptor = axios.interceptors.response.use(
+    const interceptor = api.interceptors.response.use(
       (response) => response,
       (error) => {
         if (error.response?.status === 401 && user) {
@@ -70,13 +70,13 @@ export const AuthProvider = ({ children }) => {
     );
 
     return () => {
-      axios.interceptors.response.eject(interceptor);
+      api.interceptors.response.eject(interceptor);
     };
   }, [user]);
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get('/api/auth/me');
+      const response = await api.get('/auth/me');
       setUser(response.data.user);
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -88,7 +88,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const response = await axios.post('/api/auth/login', credentials);
+      const response = await api.post('/auth/login', credentials);
       const { token, user, expiresIn } = response.data;
       
       // Calculate expiry time
@@ -101,7 +101,7 @@ export const AuthProvider = ({ children }) => {
       setToken(token);
       setUser({ ...user, expiresIn });
       setSessionExpiry(expiryTime);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
       setupSessionTimeout(expiryTime);
       
@@ -116,13 +116,13 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('/api/auth/register', userData);
+      const response = await api.post('/auth/register', userData);
       const { token, user } = response.data;
       
       localStorage.setItem('token', token);
       setToken(token);
       setUser(user);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
       return { success: true };
     } catch (error) {
@@ -139,7 +139,7 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     setSessionExpiry(null);
-    delete axios.defaults.headers.common['Authorization'];
+    delete api.defaults.headers.common['Authorization'];
   };
 
   const value = {
