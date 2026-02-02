@@ -1,17 +1,32 @@
 import axios from 'axios';
 
-// HARDCODED BACKEND URL - CANNOT FAIL
-const BACKEND_URL = 'https://nexkirana-accounting-backend.onrender.com/api';
+// Dynamic backend URL configuration for different environments
+const getBackendUrl = () => {
+  // Check if we're in development
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return 'http://localhost:3000/api';
+  }
+  
+  // For production, use your Render backend URL
+  // Update this with your actual Render backend URL
+  return 'https://nexkirana-accounting-backend.onrender.com/api';
+};
 
-console.log('🔧 HARDCODED API Configuration:');
+const BACKEND_URL = getBackendUrl();
+
+console.log('🔧 Dynamic API Configuration:');
+console.log('- Current hostname:', window.location.hostname);
 console.log('- Backend URL:', BACKEND_URL);
-console.log('- This CANNOT call frontend domain');
-console.log('- Bypassing all environment variable issues');
+console.log('- Environment:', window.location.hostname.includes('localhost') ? 'Development' : 'Production');
 
-// Create axios instance with hardcoded backend URL
+// Create axios instance with dynamic backend URL
 const api = axios.create({
   baseURL: BACKEND_URL,
   timeout: 30000,
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
 });
 
 console.log('✅ API instance created with backend URL:', api.defaults.baseURL);
