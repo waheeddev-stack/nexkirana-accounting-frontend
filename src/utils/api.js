@@ -1,32 +1,39 @@
 import axios from 'axios';
 
-// Dynamic backend URL configuration for different environments
+// PRODUCTION: Dynamic backend URL with multiple fallbacks
 const getBackendUrl = () => {
+  // Production backend URLs (try multiple)
+  const productionUrls = [
+    'https://nexkirana-accounting-backend.onrender.com/api',
+    'https://nexkirana-accounting-backend.vercel.app/api'
+  ];
+  
   // Check if we're in development
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     return 'http://localhost:3000/api';
   }
   
-  // For production, use your Render backend URL
-  // Update this with your actual Render backend URL
-  return 'https://nexkirana-accounting-backend.onrender.com/api';
+  // For production, use primary backend URL
+  return productionUrls[0];
 };
 
 const BACKEND_URL = getBackendUrl();
 
-console.log('🔧 Dynamic API Configuration:');
+console.log('🔧 PRODUCTION API Configuration:');
 console.log('- Current hostname:', window.location.hostname);
 console.log('- Backend URL:', BACKEND_URL);
 console.log('- Environment:', window.location.hostname.includes('localhost') ? 'Development' : 'Production');
 
-// Create axios instance with dynamic backend URL
+// Create axios instance with production-ready configuration
 const api = axios.create({
   baseURL: BACKEND_URL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
-  }
+  },
+  // Production: Disable credentials for CORS compatibility
+  withCredentials: false
 });
 
 console.log('✅ API instance created with backend URL:', api.defaults.baseURL);
@@ -45,15 +52,32 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle errors
+// Response interceptor with production error handling
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
+    const originalRequest = error.config;
+    
+    // Handle 401 errors
     if (error.response?.status === 401) {
-      // Token expired or invalid
       localStorage.removeItem('token');
       window.location.href = '/login';
+      return Promise.reject(error);
     }
+    
+    // Production: Retry failed requests once
+    if (!originalRequest._retry && error.response?.status >= 500) {
+      originalRequest._retry = true;
+      
+      try {
+        // Wait 1 second and retry
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return api(originalRequest);
+      } catch (retryError) {
+        console.log('Retry failed:', retryError.message);
+      }
+    }
+    
     return Promise.reject(error);
   }
 );
