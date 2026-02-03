@@ -1,4 +1,0 @@
-FORCE DEPLOYMENT - 2024-01-31
-This file is created to trigger a new Vercel deployment.
-The API configuration has been fixed to use the backend URL.
-Timestamp: 2024-01-31T08:45:00Z
