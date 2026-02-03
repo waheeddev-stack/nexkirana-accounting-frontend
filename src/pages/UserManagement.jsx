@@ -60,7 +60,7 @@ const UserManagement = () => {
 
     try {
       if (editingUser) {
-        await api.put(`/api/users/${editingUser._id}`, formData);
+        await api.put(`/users/${editingUser._id}`, formData);
         setSuccess('User updated successfully');
       } else {
         await api.post('/auth/register', formData);
@@ -97,7 +97,7 @@ const UserManagement = () => {
   const handleDeactivate = async (userId) => {
     if (window.confirm('Are you sure you want to deactivate this user?')) {
       try {
-        await api.delete(`/api/users/${userId}`);
+        await api.delete(`/users/${userId}`);
         setSuccess('User deactivated successfully');
         fetchUsers();
       } catch (error) {

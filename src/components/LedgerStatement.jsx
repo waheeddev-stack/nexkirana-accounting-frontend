@@ -22,7 +22,7 @@ const LedgerStatement = ({ onClose }) => {
 
   const fetchLedgers = async () => {
     try {
-      const response = await api.get(`/api/ledgers?companyId=${selectedCompany._id}`);
+      const response = await api.get(`/ledgers?companyId=${selectedCompany._id}`);
       setLedgers(response.data);
     } catch (error) {
       toast.error('Error fetching ledgers');
@@ -44,7 +44,7 @@ const LedgerStatement = ({ onClose }) => {
         endDate: dateRange.endDate
       });
 
-      const response = await api.get(`/api/reports/ledger-statement?${params}`);
+      const response = await api.get(`/reports/ledger-statement?${params}`);
       setStatement(response.data);
     } catch (error) {
       toast.error('Error generating ledger statement');

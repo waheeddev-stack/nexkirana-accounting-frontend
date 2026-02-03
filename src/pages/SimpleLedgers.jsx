@@ -33,7 +33,7 @@ const Ledgers = () => {
   const fetchLedgers = async () => {
     try {
       setLoading(true);
-      const response = await api.get(`/api/ledgers?companyId=${selectedCompany._id}`);
+      const response = await api.get(`/ledgers?companyId=${selectedCompany._id}`);
       setLedgers(response.data);
     } catch (error) {
       alert('Error fetching ledgers');

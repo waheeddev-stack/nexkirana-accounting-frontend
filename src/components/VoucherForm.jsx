@@ -40,7 +40,7 @@ const VoucherForm = ({ onSubmit, onCancel, companyId }) => {
 
   const fetchLedgers = async () => {
     try {
-      const response = await api.get(`/api/ledgers?companyId=${companyId}`);
+      const response = await api.get(`/ledgers?companyId=${companyId}`);
       setLedgers(response.data);
     } catch (error) {
       toast.error('Error fetching ledgers');

@@ -101,7 +101,7 @@ const Companies = () => {
     setError('');
     
     try {
-      const response = await api.put(`/api/companies/${editingCompany._id}`, formData);
+      const response = await api.put(`/companies/${editingCompany._id}`, formData);
       alert(response.data.message || 'Company updated successfully');
       fetchCompanies();
       setShowForm(false);
@@ -126,7 +126,7 @@ const Companies = () => {
     }
 
     try {
-      const response = await api.delete(`/api/companies/${companyId}`);
+      const response = await api.delete(`/companies/${companyId}`);
       alert(response.data.message || 'Company deleted successfully');
       fetchCompanies();
     } catch (error) {
@@ -155,7 +155,7 @@ const Companies = () => {
     }
 
     try {
-      const response = await api.patch(`/api/companies/${companyId}/restore`);
+      const response = await api.patch(`/companies/${companyId}/restore`);
       alert(response.data.message || 'Company restored successfully');
       fetchCompanies();
       fetchDeletedCompanies();

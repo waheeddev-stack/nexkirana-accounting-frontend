@@ -36,7 +36,7 @@ const Vouchers = () => {
   const fetchVouchers = async () => {
     try {
       setLoading(true);
-      const response = await api.get(`/api/vouchers?companyId=${selectedCompany._id}`);
+      const response = await api.get(`/vouchers?companyId=${selectedCompany._id}`);
       setVouchers(response.data);
     } catch (error) {
       alert('Error fetching vouchers');
@@ -48,7 +48,7 @@ const Vouchers = () => {
 
   const fetchLedgers = async () => {
     try {
-      const response = await api.get(`/api/ledgers?companyId=${selectedCompany._id}`);
+      const response = await api.get(`/ledgers?companyId=${selectedCompany._id}`);
       setLedgers(response.data);
     } catch (error) {
       console.error('Error fetching ledgers:', error);

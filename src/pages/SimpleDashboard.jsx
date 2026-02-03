@@ -22,8 +22,8 @@ const Dashboard = () => {
   const fetchStats = async () => {
     try {
       const [ledgersRes, vouchersRes] = await Promise.all([
-        api.get(`/api/ledgers?companyId=${selectedCompany._id}`),
-        api.get(`/api/vouchers?companyId=${selectedCompany._id}`)
+        api.get(`/ledgers?companyId=${selectedCompany._id}`),
+        api.get(`/vouchers?companyId=${selectedCompany._id}`)
       ]);
 
       const today = new Date().toISOString().split('T')[0];
