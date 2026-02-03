@@ -2,15 +2,15 @@ import axios from 'axios';
 
 // PRODUCTION: Dynamic backend URL with multiple fallbacks
 const getBackendUrl = () => {
-  // Production backend URLs (try multiple)
+  // Production backend URLs (without /api suffix to avoid double prefix)
   const productionUrls = [
-    'https://nexkirana-accounting-backend.onrender.com/api',
-    'https://nexkirana-accounting-backend.vercel.app/api'
+    'https://nexkirana-accounting-backend.onrender.com',
+    'https://nexkirana-accounting-backend.vercel.app'
   ];
   
   // Check if we're in development
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://localhost:3000/api';
+    return 'http://localhost:3000';
   }
   
   // For production, use primary backend URL
@@ -26,7 +26,7 @@ console.log('- Environment:', window.location.hostname.includes('localhost') ? '
 
 // Create axios instance with production-ready configuration
 const api = axios.create({
-  baseURL: BACKEND_URL,
+  baseURL: `${BACKEND_URL}/api`,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
