@@ -58,6 +58,22 @@ const UserManagement = () => {
     setError('');
     setSuccess('');
 
+    // Client-side validation
+    if (!formData.username || formData.username.length < 3) {
+      setError('Username must be at least 3 characters long');
+      return;
+    }
+
+    if (!formData.email || !/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(formData.email)) {
+      setError('Please enter a valid email address (e.g., user@example.com)');
+      return;
+    }
+
+    if (!editingUser && (!formData.password || formData.password.length < 8)) {
+      setError('Password must be at least 8 characters long');
+      return;
+    }
+
     try {
       if (editingUser) {
         await api.put(`/users/${editingUser._id}`, formData);
@@ -78,7 +94,15 @@ const UserManagement = () => {
       setEditingUser(null);
       fetchUsers();
     } catch (error) {
-      setError(error.response?.data?.message || 'Operation failed');
+      console.error('Registration/Update Error:', error);
+      
+      // Handle validation errors
+      if (error.response?.data?.errors && Array.isArray(error.response.data.errors)) {
+        const validationErrors = error.response.data.errors.map(err => err.msg).join(', ');
+        setError(`Validation failed: ${validationErrors}`);
+      } else {
+        setError(error.response?.data?.message || 'Operation failed');
+      }
     }
   };
 
@@ -195,18 +219,20 @@ const UserManagement = () => {
             <form onSubmit={handleSubmit}>
               <div className="grid grid-2 gap-4">
                 <div className="form-group">
-                  <label>Username</label>
+                  <label>Username (minimum 3 characters)</label>
                   <input
                     type="text"
                     value={formData.username}
                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                     className="form-control"
                     required
+                    minLength="3"
                     disabled={editingUser}
+                    placeholder="Enter username (min 3 characters)"
                   />
                 </div>
                 <div className="form-group">
-                  <label>Email</label>
+                  <label>Email (valid email format required)</label>
                   <input
                     type="email"
                     value={formData.email}
@@ -214,11 +240,14 @@ const UserManagement = () => {
                     className="form-control"
                     required
                     disabled={editingUser}
+                    placeholder="user@example.com"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                    title="Please enter a valid email address"
                   />
                 </div>
                 {!editingUser && (
                   <div className="form-group">
-                    <label>Password</label>
+                    <label>Password (minimum 8 characters)</label>
                     <input
                       type="password"
                       value={formData.password}
@@ -226,6 +255,7 @@ const UserManagement = () => {
                       className="form-control"
                       required
                       minLength="8"
+                      placeholder="Enter password (min 8 characters)"
                     />
                   </div>
                 )}
